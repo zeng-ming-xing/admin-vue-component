@@ -1,4 +1,4 @@
-import mapComponent from './mapComponent'
+import mapComponent from './mapComponent.jsx'
 import { defineComponent, computed, unref } from "vue";
 export default defineComponent({
   name: "FormItem",
@@ -9,7 +9,7 @@ export default defineComponent({
     },
     type: {
       type: String,
-      default: "INPUT",
+      default: "input",
     },
     componentProps: {
       type: Object,

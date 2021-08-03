@@ -20,15 +20,14 @@
         <template #test1="scope"> 我是插槽{{ scope.row.test1 }} </template>
       </BasicTable>
      
-      <Demo2></Demo2>
-      <div
+      <!-- <Demo2></Demo2> -->
+      <!-- <div
         v-on="objEvent"
         style="width:100px;height:100px;background:red"
-      ></div>
-       <BasicForm style="border:1px solid #CCC;padding:20px" :form="formModel" v-bind="fromProps">
+      ></div> -->
+       <BasicForm ref="basicForm" @submit="handleSubmit" style="border:1px solid #CCC;padding:20px" :form="formModel" v-bind="fromProps">
         
        </BasicForm>
-       <el-button @click="show">点我</el-button>
     </div>
   </div>
 </template>
@@ -36,7 +35,7 @@
 <script>
 import router from "@/router";
 import { state } from "@/store/index1.js";
-import Demo2 from "./demo/Demo2.vue";
+//import Demo2 from "./demo/Demo2.vue";
 import BasicTable from "@/components/element/table/BasicTable.vue";
 import BasicForm from "@/components/element/form/BasicForm.vue";
 import { mapGetters, mapMutations, mapActions } from "vuex";
@@ -47,7 +46,7 @@ export default {
   components: {
     BasicTable,
     BasicForm,
-    Demo2,
+ //   Demo2,
   },
   computed: {
     ...mapGetters(["countAdd"]),
@@ -178,18 +177,17 @@ export default {
         includeSchema:[{
           label:'姓名',
           prop:'name',
-          component:'INPUT',
+          component:'input',
            span:6,
            required:true,
            componentProps:{
              class:'name'
            }
-
         },
         {
           label:'电话',
           prop:'phone',
-          component:'INPUT',
+          component:'input',
            required:true,
            span:7
 
@@ -200,7 +198,7 @@ export default {
         includeSchema:[{
           label:'年纪',
           prop:'age',
-          component:'SELECT',
+          component:'select',
           componentProps:{
             options:[{
               label:'男',
@@ -218,7 +216,7 @@ export default {
         includeSchema:[{
           label:'性别',
           prop:'sex',
-          component:'INPUT',
+          component:'input',
           componentProps:{
             type:'textarea',
             autosize:{
@@ -227,11 +225,26 @@ export default {
           }
         }]
       },
-     
-    ];
+      {
+        title:'文件上传',
+        includeSchema:[{
+          label:'文件上传',
+          prop:'url',
+          component:'uploadFile',
+          componentProps:{
+            uploadType:['.png']
+          },
+          span:4
+        }]
+      }
+    ]
+    
     const fromProps = {
       schemas,
       title:'表单填写',
+      action:{
+        cancelText:'取消'
+      }
 
     };
 
@@ -244,13 +257,15 @@ export default {
       age: "",
       sex: "",
       phone:'099'
-    });
-   const show = () => {
-     console.log(formModel.value)
-   }
+    })
+
     const focus = (e, data) => {
       console.log(e, data);
     };
+  
+   const handleSubmit = (form) => {
+       console.log(form)
+   }
 
     return {
       changeRouter,
@@ -262,7 +277,7 @@ export default {
       objEvent,
       state,
       fromProps,
-      show
+      handleSubmit
     };
   },
 };
